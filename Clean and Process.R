@@ -23,7 +23,7 @@ protestas$fecha <- dmy(protestas$fecha)
 #####################################
 ############# GEOCODE ###############
 
-coords <- geocode(protestas$ubicacion)
+#coords <- geocode(protestas$ubicacion)
 
 ########################################
 
@@ -43,6 +43,30 @@ protestas$ubicacioncorrecta <- ifelse(protestas$lat > 13
                                       & protestas$lon > -89.3 
                                       & protestas$lon < -83.1, 
                                       yes = "correcto", no = "incorrecto")
+
+
+
+### Crear Tamanos para Circulos en Leaflet ###
+
+protestas$tamano[is.na(protestas$tamano)] <- mean(protestas$tamano, na.rm = TRUE)
+
+protestas$size <- 
+  ifelse(protestas$tamano < 45, yes = 1, no = NA)
+
+protestas$size <- 
+  ifelse(protestas$tamano > 44 & protestas$tamano < 100, yes = 3, no = protestas$size)
+
+protestas$size <- 
+  ifelse(protestas$tamano > 99 & protestas$tamano < 200, yes = 5, no = protestas$size)
+
+protestas$size <- 
+  ifelse(protestas$tamano > 199 & protestas$tamano < 500, yes = 7, no = protestas$size)
+
+protestas$size <- 
+  ifelse(protestas$tamano > 499, yes = 9, no = protestas$size)
+
+           
+
 
 write.csv(protestas, "data/Protestas con Ubicaciones.csv", row.names = FALSE)
 
@@ -98,6 +122,9 @@ addProviderTiles("Esri.WorldStreetMap") %>%
 )
 
 
+### Fix Date Range for Line Graph ###
+
+daterange <- as.Date(min(datsum$fecha):max(datsum$fecha))
 
 
 
@@ -116,8 +143,7 @@ addProviderTiles("Esri.WorldStreetMap") %>%
 
 
 
-
-
+leaflet.extras::add
 
 
 

@@ -1,0 +1,72 @@
+```{r Load Libraries}
+
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(highcharter)
+library(ggmap)
+library(lubridate)
+library(leaflet)
+library(leaflet.extras)
+
+```
+
+```{r Leaflet Map with Circle Markers, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+
+map <- 
+leaflet() %>% 
+  setView(lng = -86.6, 
+          lat = 14.63, 
+          zoom = 8) %>% 
+  
+  addProviderTiles("Esri.WorldStreetMap") %>% 
+  addCircleMarkers(
+  lat = protestas$lat,
+  lng = protestas$lon,
+  radius = (as.numeric(protestas$size*2)),
+  
+  #stroke = FALSE,
+ color = "#de2d26"
+  #fillOpacity = 0.6
+)
+
+map
+
+```
+
+
+
+
+
+```{r Leaflet Heatmap}
+
+protestas <- read.csv("data/protestasconcoords.csv")
+
+
+protestas$lon[is.na(protestas$lon)] <- "-75"
+protestas$lat[is.na(protestas$lat)] <- "6.9"
+
+protestas$lon <- as.numeric(protestas$lon)
+protestas$lat <- as.numeric(protestas$lat)
+
+
+
+
+leaflet(protestas) %>% 
+  setView(lng = -86.6, 
+          lat = 14.63, 
+          zoom = 8) %>% 
+  
+  addProviderTiles("CartoDB.DarkMatter") %>%
+  
+  addWebGLHeatmap(lng = ~lon, lat = ~lat, size = 40000, intensity = .1)
+  
+
+
+#leaflet.extras::addwebglheatm
+
+```
+
