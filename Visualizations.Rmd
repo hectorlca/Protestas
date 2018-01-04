@@ -38,10 +38,7 @@ map
 ```
 
 
-
-
-
-```{r Leaflet Heatmap}
+```{r Leaflet Heatmap con las 595 Protestas}
 
 protestas <- read.csv("data/protestasconcoords.csv")
 
@@ -60,13 +57,65 @@ leaflet(protestas) %>%
           lat = 14.63, 
           zoom = 8) %>% 
   
-  addProviderTiles("CartoDB.DarkMatter") %>%
+  addProviderTiles("Esri.WorldImagery") %>%
   
-  addWebGLHeatmap(lng = ~lon, lat = ~lat, size = 40000, intensity = .1)
+  addHeatmap(lng = ~lon, 
+             lat = ~lat, 
+             intensity = .5, 
+             radius = 20
+             
+
+             )
   
 
 
-#leaflet.extras::addwebglheatm
+#leaflet.extras::addHea
 
 ```
+
+
+
+```{r}
+protestas <- read.csv("data/protestasconcoords.csv")
+
+
+protestas$lon[is.na(protestas$lon)] <- "-75"
+protestas$lat[is.na(protestas$lat)] <- "6.9"
+
+protestas$lon <- as.numeric(protestas$lon)
+protestas$lat <- as.numeric(protestas$lat)
+
+
+
+
+leaflet(protestas) %>% 
+  setView(lng = -86.6, 
+          lat = 14.63, 
+          zoom = 8) %>% 
+  
+  addProviderTiles("Esri.WorldImagery") %>%
+  
+  addWebGLHeatmap(lng = ~lon, 
+             lat = ~lat, 
+             intensity = .4, 
+             size = 10000
+             )
+
+
+sisters of mercy have been in contact
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
